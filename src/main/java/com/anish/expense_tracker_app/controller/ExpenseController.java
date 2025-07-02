@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/expenses")
-public class ExpenseContoller {
+public class ExpenseController {
 
     //inject the ExpenseService using constructor based DI
     private ExpenseService expenseService;
