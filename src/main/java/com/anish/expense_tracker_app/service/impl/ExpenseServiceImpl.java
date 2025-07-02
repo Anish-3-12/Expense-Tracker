@@ -3,6 +3,7 @@ package com.anish.expense_tracker_app.service.impl;
 import com.anish.expense_tracker_app.dto.ExpenseDto;
 import com.anish.expense_tracker_app.entity.Category;
 import com.anish.expense_tracker_app.entity.Expense;
+import com.anish.expense_tracker_app.exceptions.ResourceNotFoundException;
 import com.anish.expense_tracker_app.mapper.ExpenseMapper;
 import com.anish.expense_tracker_app.repository.CategoryRepository;
 import com.anish.expense_tracker_app.repository.ExpenseRespository;
@@ -39,7 +40,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         //Check if id exists
         Expense expense=expenseRespository.findById(expenseId)
-                .orElseThrow(()-> new RuntimeException("Id not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Id not found"));
 
         //convert expense entity to expenseDto
         ExpenseDto expenseDto= ExpenseMapper.mapToExpenseDto(expense);
@@ -60,7 +61,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     public ExpenseDto updateExpense(Long expenseId, ExpenseDto expenseDto) {
 
         Expense expense= expenseRespository.findById(expenseId)
-                .orElseThrow(()-> new RuntimeException("Id not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Id not found"));
 
         //update expenses
         expense.setAmount(expenseDto.amount());
@@ -71,7 +72,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         if(expenseDto.categoryDto() != null){
 
             Category category=categoryRepository.findById(expenseDto.categoryDto().id())
-                    .orElseThrow(()-> new RuntimeException("CAtegory not found with given Id"));
+                    .orElseThrow(()-> new ResourceNotFoundException("CAtegory not found with given Id"));
 
             expense.setCategory(category);
         }
@@ -84,7 +85,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public void deleteExpense(Long expenseId) {
         Expense expense = expenseRespository.findById(expenseId)
-                .orElseThrow(()-> new RuntimeException("Id not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Id not found"));
 
         expenseRespository.delete(expense);
     }

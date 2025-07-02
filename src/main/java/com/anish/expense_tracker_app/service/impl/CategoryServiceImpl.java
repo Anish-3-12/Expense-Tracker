@@ -2,6 +2,7 @@ package com.anish.expense_tracker_app.service.impl;
 
 import com.anish.expense_tracker_app.dto.CategoryDto;
 import com.anish.expense_tracker_app.entity.Category;
+import com.anish.expense_tracker_app.exceptions.ResourceNotFoundException;
 import com.anish.expense_tracker_app.mapper.CategoryMapper;
 import com.anish.expense_tracker_app.repository.CategoryRepository;
 import com.anish.expense_tracker_app.service.CategoryService;
@@ -34,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto getCategoryById(Long categoryId) {
 
         Category category=categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found with ID:"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID:"));
 
         return CategoryMapper.mapToCategoryDto(category);
     }
@@ -53,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         //get Category entity from database by category id
         Category category=categoryRepository.findById(categoryId)
-                .orElseThrow(()-> new RuntimeException("Category not found with Id:"+ categoryId));
+                .orElseThrow(()-> new ResourceNotFoundException("Category not found with Id:"+ categoryId));
 
         //update the category entity object and saveto database table
         category.setName(categoryDto.name());
@@ -66,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         //Check if the Id exisits or not
         Category category= categoryRepository.findById(categoryId)
-                .orElseThrow(()-> new RuntimeException("Category with given Id not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Category with given Id not found"));
 
         categoryRepository.delete(category);
 
