@@ -47,4 +47,28 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(category -> CategoryMapper.mapToCategoryDto(category))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public CategoryDto updateCategory(Long categoryId, CategoryDto categoryDto) {
+
+        //get Category entity from database by category id
+        Category category=categoryRepository.findById(categoryId)
+                .orElseThrow(()-> new RuntimeException("Category not found with Id:"+ categoryId));
+
+        //update the category entity object and saveto database table
+        category.setName(categoryDto.name());
+        Category updatedCategory=categoryRepository.save(category);
+        return CategoryMapper.mapToCategoryDto(updatedCategory);
+    }
+
+    @Override
+    public void deleteCategory(Long categoryId) {
+
+        //Check if the Id exisits or not
+        Category category= categoryRepository.findById(categoryId)
+                .orElseThrow(()-> new RuntimeException("Category with given Id not found"));
+
+        categoryRepository.delete(category);
+
+    }
 }

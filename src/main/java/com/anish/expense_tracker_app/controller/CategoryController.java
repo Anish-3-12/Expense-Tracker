@@ -39,4 +39,20 @@ public class CategoryController {
         List<CategoryDto> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);
     }
+
+    //Build update Category REST API
+    @PutMapping("{id}")
+    public ResponseEntity<CategoryDto> updateCategory(@PathVariable("id") Long categoryId,
+                                                      @RequestBody CategoryDto categoryDto){
+        CategoryDto updatedCategory=categoryService.updateCategory(categoryId, categoryDto);
+        return ResponseEntity.ok(updatedCategory);
+    }
+
+    //Build delete Category REST API
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteCategory(@PathVariable("id") Long categoryId){
+        categoryService.deleteCategory(categoryId);
+
+        return ResponseEntity.ok("Category Deleted Successfully");
+    }
 }
